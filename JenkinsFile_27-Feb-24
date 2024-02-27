@@ -1,0 +1,21 @@
+pipeline {
+    agent {label "projectA"}
+
+    stages {
+        stage('1st Stage_Clone') {
+            steps {
+                git 'https://github.com/Naveenbb1/Helloworld-new.git'
+            }
+        }
+        stage('2nd Stage_Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('3rd Stage_Deploy') {
+            steps {
+                deploy adapters: [tomcat8(credentialsId: 'Tomcat-Admin', path: '', url: 'http://54.92.129.69:8080/')], contextPath: null, war: '**/*.war'
+            }
+        }         
+    }
+}
